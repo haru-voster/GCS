@@ -1,7 +1,7 @@
 from django.urls import path  # Use path instead of url
 from . import views
 from django.contrib.auth import views as auth_views
-
+  
 urlpatterns = [
     path('', views.index, name='index'),
     path('register/', views.register, name='register'),
@@ -11,6 +11,7 @@ urlpatterns = [
     path('passwords/', views.change_password_g, name='change_password_g'),
     path('counter/', views.counter, name='counter'),
     path('solved/', views.solved, name='solved'),
+    path('dashboard/', views.dashboard, name='dashboard'),
 
     path('login/', views.login, name='login'),
     path('list/', views.list, name='list'),
@@ -20,6 +21,8 @@ urlpatterns = [
 
     path('login_redirect/', views.login_redirect, name='login_redirect'),
     path('slist/', views.slist),
+    path('allcomplaints/', views.allcomplaints, name='allcomplaints'),
+    path('complaints/', views.complaints, name='complaints'),
 
     # Password Reset URLs
     path('password-reset/', auth_views.PasswordResetView.as_view(template_name='GRsystem/password_reset.html'), name='password_reset'),

@@ -11,9 +11,9 @@ def save_profile(sender, instance, created, **kwargs):
         profile = Profile(user=user)
         profile.save()
 
-#@receiver(post_save, sender=User, dispatch_uid='save_new_user_profile')
-#def save_profile(sender, instance, created, **kwargs):
-    #user = instance
-    #if created:
-        #complaint = Complaint(user=user)
-        #complaint.save()
+@receiver(post_save, sender=User, dispatch_uid='save_new_user_profile')
+def save_profile(sender, instance, created, **kwargs):
+    user = instance
+    if created:
+        complaint = Complaint(user=user)
+        complaint.save()

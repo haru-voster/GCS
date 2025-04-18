@@ -34,6 +34,21 @@ def login(request):
 
 def signin(request):
     return render(request,"GRsystem/signin.html")
+# views.py
+from django.shortcuts import redirect
+from django.contrib.auth import logout
+
+# views.py
+from django.shortcuts import redirect
+from django.contrib.auth import logout
+from django.http import HttpResponseForbidden
+
+def logout_view(request):
+    if request.method == 'POST':
+        logout(request)
+        return redirect('login')  # Or any other page after logout
+    return HttpResponseForbidden("Invalid request method")
+
 
 #get the count of all the submitted complaints,solved,unsolved.
 def counter(request):

@@ -11,7 +11,7 @@ import requests
 class ComplaintForm(forms.ModelForm):
     class Meta:
         model=Complaint
-        fields=('Subject','Type_of_complaint','Description')
+        fields=('Subject','Type_of_addressee','Description')
         
 
 class UserProfileform(forms.ModelForm):

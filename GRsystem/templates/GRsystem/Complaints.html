@@ -140,11 +140,11 @@ background: linear-gradient(to right, #4A00E0, #4A00E0); /* W3C, IE 10+/ Edge, F
       <td>{{ data.user.username }}</td>
 	    <td>{{data.Subject}}</td>
      <!-- <td>{{ data.Branch }}</td>-->
-      <td>{{ data.get_Type_of_complaint_display }}</td>
+      <td>{{ data.get_Type_of_addressee_display }}</td>
       <td>{{ data.Time }}</td>
       <td><form method="POST" action='/pdf/'>{% csrf_token %}<input type='hidden' name="cid" value={{data.id}}><button type='submit' class="btn btn-outline-primary">Details</button></form></td>
 	 
-      <td class="color_{{ data.status }}"></td>
+      <td class="color_{{ data.status }}">Pending</td>
 	  
     
 	

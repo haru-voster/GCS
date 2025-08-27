@@ -6,7 +6,7 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('register/', views.register, name='register'),
     path('signin/', auth_views.LoginView.as_view(template_name='GRsystem/signin.html'), name='signin'),
-    path('logout/', auth_views.LogoutView.as_view(template_name='Grsystem/logout.html'), name='logout'),
+    path('logout/', auth_views.LogoutView.as_view(template_name='GRsystem/logout.html'), name='logout'),
     path('password/', views.change_password, name='change_password'),
     path('passwords/', views.change_password_g, name='change_password_g'),
     path('counter/', views.counter, name='counter'),

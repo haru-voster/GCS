@@ -174,7 +174,7 @@ def complaints(request):
         
         complaint_form=ComplaintForm(request.POST)
     context={'complaint_form':complaint_form,}
-    return render(request,'Grsystem/comptotal.html',context)
+    return render(request,'GRsystem/comptotal.html',context)
         
 
 @login_required
@@ -183,13 +183,13 @@ def list(request):
     result=Complaint.objects.filter(user=request.user).exclude(Q(status='3') | Q(status='2'))
     #c=Complaint.objects.all()
     args={'c':c,'result':result}
-    return render(request,'Grsystem/Complaints.html',args)
+    return render(request,'GRsystem/Complaints.html',args)
 @login_required
 def slist(request):
     result=Complaint.objects.filter(user=request.user).exclude(Q(status='3') | Q(status='2'))
     #c=Complaint.objects.all()
     args={'result':result}
-    return render(request,'Grsystem/solvedcomplaint.html',args)
+    return render(request,'GRsystem/solvedcomplaint.html',args)
 
 @login_required
 def allcomplaints(request):
@@ -313,15 +313,15 @@ def pdf_viewer(request):
     print(a)
     print (delta.days )       
     if detailtype=='1':
-            detailtype="Addressee: ClassRoom"
+            detailtype="Complaint: ClassRoom"
     if detailtype=='3':
-            detailtype="Addressee: Management"
+            detailtype="Complaint: Management"
     if detailtype=='2':
-            detailtype="Addressee: Security"
+            detailtype="Complaint: Security"
     if detailtype=='4':
-            detailtype="Addressee: School"
+            detailtype="Complaint: School"
     if detailtype=='5':
-            detailtype="Addressee: Other"
+            detailtype="Complaint: Other"
 
     p.drawString(25, 770,"Report:")
     p.drawString(30, 750,detailname)
@@ -369,15 +369,15 @@ def pdf_view(request):
     #detail_string = u", ".join(("Desc={}".format(val['Description'])) for val in details) 
 
     if detailtype=='1':
-            detailtype="Addressee: ClassRoom"
+            detailtype="Complaint: ClassRoom"
     if detailtype=='3':
-            detailtype="Addressee: Management"
+            detailtype="Complaint: Management"
     if detailtype=='2':
-            detailtype="Addressee: Security"
+            detailtype="Complaint: Security"
     if detailtype=='4':
-            detailtype="Addressee: School"
+            detailtype="Complaint: School"
     if detailtype=='5':
-            detailtype="Addressee: Other"
+            detailtype="Complaint: Other"
 
     p.drawString(25, 770,"Report:")
     p.drawString(30, 750,detailname)

@@ -1,71 +1,65 @@
 from django.db import models
-from django import forms
 from django.contrib.auth.models import User
 from django.dispatch import receiver
 from django.db.models.signals import post_save
-
 from django.core.validators import RegexValidator
 from datetime import datetime
 
 class Meta:
-
     app_label = 'GRsystem'
+
 class Profile(models.Model):
-    typeuser =(('student','student'),('grievance', 'grievance'))
-    COL=(('College1','College1'),('College2','College2')) #change college names
-    user =models.OneToOneField(User, on_delete=models.CASCADE,primary_key=True)
-    collegename=models.CharField(max_length=29,choices=COL,blank=False)
-    phone_regex =RegexValidator(regex=r'^\d{10,10}$', message="Phone number must be entered in the format:Up to 10 digits allowed.")
-    contactnumber = models.CharField(validators=[phone_regex], max_length=10, blank=True) 
-    type_user=models.CharField(max_length=20,default='student',choices=typeuser)
-    CB=(('ComputerScience',"ComputerScience"),('InformationScience',"InformationScience"),('Electronics and Communication',"Electronics and Communication"),('Mechanical',"Mechanical"))
-    Branch=models.CharField(choices=CB,max_length=29,default='ComputerScience')
-    def __str__(self):
-        return self.collegename
+    TYPE_USER = (('student', 'student'), ('grievance', 'grievance'))
+    COLLEGES = (('College1', 'College1'), ('College2', 'College2'))
+    BRANCHES = (
+        ('ComputerScience', "ComputerScience"),
+        ('InformationScience', "InformationScience"),
+        ('Electronics and Communication', "Electronics and Communication"),
+        ('Mechanical', "Mechanical")
+    )
+
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    collegename = models.CharField(max_length=29, choices=COLLEGES)
+    phone_regex = RegexValidator(
+        regex=r'^\d{10}$',
+        message="Phone number must be exactly 10 digits."
+    )
+    contactnumber = models.CharField(validators=[phone_regex], max_length=10, blank=True)
+    type_user = models.CharField(max_length=20, choices=TYPE_USER, default='student')
+    Branch = models.CharField(max_length=29, choices=BRANCHES, default='ComputerScience')
+
     def __str__(self):
         return self.user.username
-    
-    
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
 
-'''@receiver(post_save, sender=User)
-def save_user_profile(sender, instance, **kwargs):
-    instance.profile.save()'''
-
-
 class Complaint(models.Model):
-    STATUS =((1,'Solved'),(2, 'InProgress'),(3,'Pending'))
-    TYPE=(('ClassRoom',"ClassRoom"),('Security',"Security"),('Management',"Management"),('College',"College"),('Other',"Other"))
-    
-    Subject=models.CharField(max_length=200,blank=False,null=True)
-    user=models.ForeignKey(User, on_delete=models.CASCADE,default=None)
-    
-    Type_of_addressee=models.CharField(choices=TYPE,null=True,max_length=200)
-    Description=models.TextField(max_length=4000,blank=False,null=True)
-    Time = models.DateField(auto_now=True)
-    status=models.IntegerField(choices=STATUS,default=3)
-    
-   
-    def __init__(self, *args, **kwargs):
-        super(Complaint, self).__init__(*args, **kwargs)
-        self.__status = self.status
+    STATUS = ((1, 'Solved'), (2, 'InProgress'), (3, 'Pending'))
+    TYPE = (
+        ('ClassRoom', "ClassRoom"),
+        ('Security', "Security"),
+        ('Management', "Management"),
+        ('College', "College"),
+        ('Other', "Other")
+    )
 
-    def save(self, *args, **kwargs):
-        if self.status and not self.__status:
-            self.active_from = datetime.now()
-        super(Complaint, self).save(*args, **kwargs)
-    
+    Subject = models.CharField(max_length=200, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
+    Type_of_addressee = models.CharField(choices=TYPE, max_length=200, null=True)
+    Description = models.TextField(max_length=4000, null=True)
+    Time = models.DateField(auto_now=True)
+    status = models.IntegerField(choices=STATUS, default=3)
+
     def __str__(self):
-     	return self.get_Type_of_addressee_display()
-def __str__(self):
- 	    return str(self.user)
+        subject = self.Subject or "No Subject"
+        username = self.user.username if self.user else "Unknown User"
+        return f"{subject} by {username}"
 
 class Grievance(models.Model):
-    guser=models.OneToOneField(User,on_delete=models.CASCADE,default=None)
+    guser = models.OneToOneField(User, on_delete=models.CASCADE, default=None)
 
     def __str__(self):
-        return self.guser
+        return self.guser.username if self.guser else "Unknown Grievance User"

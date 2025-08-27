@@ -357,16 +357,16 @@ def pdf_view(request):
     for val in details:
             detail_string=(" {}".format(val['Description']))
     for val in name:
-            detailname=("FROM: {}".format(val['username']))
+            detailname=(" {}".format(val['username']))
     #for val in Branch:
             #detailbranch=("Branch: {}".format(val['Branch']))
     for val in Subject:
-            detailsubject=("SUBJECT: {}".format(val['Subject']))
+            detailsubject=("{}".format(val['Subject']))
     for val in Type:
-            detailtype=("TO: {}".format(val['Type_of_addressee']))
+            detailtype=("{}".format(val['Type_of_addressee']))
             
     for val in Issuedate:
-            detailtime=("DATE OF ISSUE: {}".format(val['Time']))
+            detailtime=(" {}".format(val['Time']))
     #detail_string = u", ".join(("Desc={}".format(val['Description'])) for val in details) 
 
     if detailtype=='1':
@@ -390,7 +390,7 @@ def pdf_view(request):
     p.setFont("Helvetica", 11)
     y = 740
     row_height = 20
-
+#row fields
     def draw_row(label, value, color=colors.darkgreen):
         nonlocal y
         p.setFillColor(colors.black)

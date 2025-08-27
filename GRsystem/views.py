@@ -305,7 +305,7 @@ def pdf_viewer(request):
     for val in Issuedate:
             ptime=("{}".format(val['Time']))
             detailtime=("Date of Issue/ Time of Solved: {}".format(val['Time']))
-    detail_string = u", ".join(("Desc={}".format(val['Description'])) for val in details) 
+    detail_string = u", ".join(("{}".format(val['Description'])) for val in details) 
     date_format = "%Y-%m-%d"
     a = datetime.strptime(str(datetime.now().date()), date_format)
     b = datetime.strptime(str(ptime), date_format)
@@ -314,7 +314,7 @@ def pdf_viewer(request):
     print(a)
     print (delta.days )       
     if detailtype=='1':
-            detailtype="Complaint: ClassRoom"
+            detailtype="Complaint: ClassRoom"              
     if detailtype=='3':
             detailtype="Complaint: Management"
     if detailtype=='2':
@@ -359,7 +359,7 @@ def pdf_view(request):
     for val in name:
             detailname=(" {}".format(val['username']))
     for val in Branch:
-            detailbranch=("Branch: {}".format(val['Branch']))
+            detailbranch=("{}".format(val['Branch']))
     for val in Subject:
             detailsubject=("{}".format(val['Subject']))
     for val in Type:
@@ -367,7 +367,7 @@ def pdf_view(request):
             
     for val in Issuedate:
             detailtime=(" {}".format(val['Time']))
-    detail_string = u", ".join(("Desc={}".format(val['Description'])) for val in details) 
+    detail_string = u", ".join(("{}".format(val['Description'])) for val in details) 
 
     if detailtype=='1':
             detailtype="Complaint: ClassRoom"
@@ -402,6 +402,7 @@ def pdf_view(request):
     draw_row("FROM:", detailname, colors.green)
     draw_row("TO:", detailtype, colors.red)
     draw_row("DATE OF ISSUE:", detailtime, colors.blue)
+    draw_row("BRANCH:", detailbranch, colors.red)
     draw_row("SUBJECT:", detailsubject, colors.darkgreen)
     draw_row("DESCRIPTION:", detail_string, colors.black)
 

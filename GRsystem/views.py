@@ -10,6 +10,7 @@ from reportlab.lib.pagesizes import A4
 from reportlab.pdfgen import canvas
 import reportlab
 
+from reportlab.lib import colors
 from django.db.models import Count, Q
 from .models import Profile,Complaint
 
@@ -274,7 +275,7 @@ def pdf_viewer(request):
     detail_string={}
     #detailname={}
     response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename=Complaint_id.pdf'
+    response['Content-Disposition'] = 'inline; filename=Complaint_id.pdf'
     p = canvas.Canvas(response,pagesize=A4)
     
     cid=request.POST.get('cid')
@@ -293,17 +294,17 @@ def pdf_viewer(request):
     for val in details:
             detail_string=("{}".format(val['Description']))
     for val in name:
-           detailname=("User: {}".format(val['user_id']))
+           detailname=("FROM: {}".format(val['user_id']))
     '''for val in Branch:
             detailbranch=("Branch: {}".format(val['Branch']))'''
     for val in Subject:
-            detailsubject=("Subject: {}".format(val['Subject']))
+            detailsubject=("SUBJECT: {}".format(val['Subject']))
     for val in Type:
-            detailtype=("{}".format(val['Type_of_addressee']))
+            detailtype=("TO:{}".format(val['Type_of_addressee']))
             
     for val in Issuedate:
             ptime=("{}".format(val['Time']))
-            detailtime=("Time of Issue/ Time of Solved: {}".format(val['Time']))
+            detailtime=("Date of Issue/ Time of Solved: {}".format(val['Time']))
     #detail_string = u", ".join(("Desc={}".format(val['Description'])) for val in details) 
     date_format = "%Y-%m-%d"
     a = datetime.strptime(str(datetime.now().date()), date_format)
@@ -323,13 +324,13 @@ def pdf_viewer(request):
     if detailtype=='5':
             detailtype="Complaint: Other"
 
-    p.drawString(25, 770,"Report:")
+    p.drawString(25, 770,"GRS SUMMARY REPORT:")
     p.drawString(30, 750,detailname)
     ''' p.drawString(30, 730,detailbranch)'''
     p.drawString(30, 710,detailtype)
     p.drawString(30, 690,detailtime)
     p.drawString(30, 670,detailsubject)
-    p.drawString(30, 650,"Description:")
+    p.drawString(30, 650,"DESCRIPTION:")
     p.drawString(30, 630,detail_string)
 
     p.showPage()
@@ -341,7 +342,7 @@ def pdf_viewer(request):
 def pdf_view(request):
     detail_string={}
     response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename=complaint_id.pdf'
+    response['Content-Disposition'] = 'inline; filename=complaint_id.pdf'
     
     p = canvas.Canvas(response,pagesize=A4)
     cid=request.POST.get('cid')
@@ -354,18 +355,18 @@ def pdf_view(request):
     Issuedate = Complaint.objects.filter(id=cid).values('Time')
 
     for val in details:
-            detail_string=("{}".format(val['Description']))
+            detail_string=(" {}".format(val['Description']))
     for val in name:
-            detailname=("User: {}".format(val['username']))
+            detailname=("FROM: {}".format(val['username']))
     #for val in Branch:
             #detailbranch=("Branch: {}".format(val['Branch']))
     for val in Subject:
-            detailsubject=("Subject: {}".format(val['Subject']))
+            detailsubject=("SUBJECT: {}".format(val['Subject']))
     for val in Type:
-            detailtype=("{}".format(val['Type_of_addressee']))
+            detailtype=("TO: {}".format(val['Type_of_addressee']))
             
     for val in Issuedate:
-            detailtime=("Time of Issue: {}".format(val['Time']))
+            detailtime=("DATE OF ISSUE: {}".format(val['Time']))
     #detail_string = u", ".join(("Desc={}".format(val['Description'])) for val in details) 
 
     if detailtype=='1':
@@ -379,14 +380,31 @@ def pdf_view(request):
     if detailtype=='5':
             detailtype="Complaint: Other"
 
-    p.drawString(25, 770,"Report:")
-    p.drawString(30, 750,detailname)
-    #p.drawString(30, 730,detailbranch)
-    p.drawString(30, 710,detailtype)
-    p.drawString(30, 690,detailtime)
-    p.drawString(30, 670,detailsubject)
-    p.drawString(30, 650,"Description:")
-    p.drawString(30, 630,detail_string)
+
+    # Header
+    p.setFont("Helvetica-Bold", 14)
+    p.setFillColor(colors.blue)
+    p.drawString(25, 770, "GRS SUMMARY REPORT:")
+
+    # Table-like layout
+    p.setFont("Helvetica", 11)
+    y = 740
+    row_height = 20
+
+    def draw_row(label, value, color=colors.darkgreen):
+        nonlocal y
+        p.setFillColor(colors.black)
+        p.drawString(30, y, label)
+        p.setFillColor(color)
+        p.drawString(150, y, value)
+        y -= row_height
+
+    draw_row("FROM:", detailname, colors.green)
+    draw_row("TO:", detailtype, colors.red)
+    draw_row("DATE OF ISSUE:", detailtime, colors.blue)
+    draw_row("SUBJECT:", detailsubject, colors.darkgreen)
+    draw_row("DESCRIPTION:", detail_string, colors.black)
+
 
     p.showPage()
     p.save()

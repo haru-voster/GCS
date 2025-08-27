@@ -39,10 +39,7 @@ def create_user_profile(sender, instance, created, **kwargs):
 class Complaint(models.Model):
     STATUS = ((1, 'Solved'), (2, 'InProgress'), (3, 'Pending'))
     TYPE = (
-        ('ClassRoom', "ClassRoom"),
-        ('Security', "Security"),
-        ('Management', "Management"),
-        ('College', "College"),
+        ('ClassRoom', "ClassRoom"),('Security', "Security"),('Management', "Management"),('College', "College"),
         ('Other', "Other")
     )
 

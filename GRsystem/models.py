@@ -42,9 +42,11 @@ class Complaint(models.Model):
         ('ClassRoom', "ClassRoom"),('Security', "Security"),('Management', "Management"),('College', "College"),
         ('Other', "Other")
     )
+    BRANCHES = ('collage 1', 'collage 2')
 
     Subject = models.CharField(max_length=200, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
+    Branch = models.CharField(choices=TYPE, max_length=200, null=True)
     Type_of_addressee = models.CharField(choices=TYPE, max_length=200, null=True)
     Description = models.TextField(max_length=4000, null=True)
     Time = models.DateField(auto_now=True)

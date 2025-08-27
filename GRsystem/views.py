@@ -284,7 +284,7 @@ def pdf_viewer(request):
     
     details = Complaint.objects.filter(id=cid).values('Description')
     name = Complaint.objects.filter(id=cid).values('user_id')
-    '''Branch = Complaint.objects.filter(id=cid).values('Branch')'''
+    Branch = Complaint.objects.filter(id=cid).values('Branch')
     Subject = Complaint.objects.filter(id=cid).values('Subject')
     Type = Complaint.objects.filter(id=cid).values('Type_of_addressee')
     Issuedate = Complaint.objects.filter(id=cid).values('Time')
@@ -295,8 +295,8 @@ def pdf_viewer(request):
             detail_string=("{}".format(val['Description']))
     for val in name:
            detailname=("FROM: {}".format(val['user_id']))
-    '''for val in Branch:
-            detailbranch=("Branch: {}".format(val['Branch']))'''
+    for val in Branch:
+            detailbranch=("Branch: {}".format(val['Branch']))
     for val in Subject:
             detailsubject=("SUBJECT: {}".format(val['Subject']))
     for val in Type:
@@ -305,7 +305,7 @@ def pdf_viewer(request):
     for val in Issuedate:
             ptime=("{}".format(val['Time']))
             detailtime=("Date of Issue/ Time of Solved: {}".format(val['Time']))
-    #detail_string = u", ".join(("Desc={}".format(val['Description'])) for val in details) 
+    detail_string = u", ".join(("Desc={}".format(val['Description'])) for val in details) 
     date_format = "%Y-%m-%d"
     a = datetime.strptime(str(datetime.now().date()), date_format)
     b = datetime.strptime(str(ptime), date_format)
@@ -326,7 +326,7 @@ def pdf_viewer(request):
 
     p.drawString(25, 770,"GRS SUMMARY REPORT:")
     p.drawString(30, 750,detailname)
-    ''' p.drawString(30, 730,detailbranch)'''
+    p.drawString(30, 730,detailbranch)
     p.drawString(30, 710,detailtype)
     p.drawString(30, 690,detailtime)
     p.drawString(30, 670,detailsubject)
@@ -349,7 +349,7 @@ def pdf_view(request):
     #print(cid)
     details = Complaint.objects.filter(id=cid).values('Description')
     name = User.objects.filter(username=request.user.username).values('username')
-    #Branch = Complaint.objects.filter(id=cid).values('Branch')
+    Branch = Complaint.objects.filter(id=cid).values('Branch')
     Subject = Complaint.objects.filter(id=cid).values('Subject')
     Type = Complaint.objects.filter(id=cid).values('Type_of_addressee')
     Issuedate = Complaint.objects.filter(id=cid).values('Time')
@@ -358,8 +358,8 @@ def pdf_view(request):
             detail_string=(" {}".format(val['Description']))
     for val in name:
             detailname=(" {}".format(val['username']))
-    #for val in Branch:
-            #detailbranch=("Branch: {}".format(val['Branch']))
+    for val in Branch:
+            detailbranch=("Branch: {}".format(val['Branch']))
     for val in Subject:
             detailsubject=("{}".format(val['Subject']))
     for val in Type:
@@ -367,7 +367,7 @@ def pdf_view(request):
             
     for val in Issuedate:
             detailtime=(" {}".format(val['Time']))
-    #detail_string = u", ".join(("Desc={}".format(val['Description'])) for val in details) 
+    detail_string = u", ".join(("Desc={}".format(val['Description'])) for val in details) 
 
     if detailtype=='1':
             detailtype="Complaint: ClassRoom"

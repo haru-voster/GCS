@@ -112,7 +112,9 @@ background: linear-gradient(to right, #4A00E0, #4A00E0); /* W3C, IE 10+/ Edge, F
 
       </th>
 	  <th class="th-sm  text-primary">Subject
-
+    </th>
+      <th class="th-sm  text-primary">Branch
+      </th>
       <th class="th-sm  text-primary">Complaint Type
 
       </th>
@@ -125,8 +127,7 @@ background: linear-gradient(to right, #4A00E0, #4A00E0); /* W3C, IE 10+/ Edge, F
       <th class="th-sm  text-primary">Status
 
       </th>
-     
-
+  
       
     </tr>
   </thead>
@@ -139,7 +140,7 @@ background: linear-gradient(to right, #4A00E0, #4A00E0); /* W3C, IE 10+/ Edge, F
 
       <td>{{ data.user.username }}</td>
 	    <td>{{data.Subject}}</td>
-     <!-- <td>{{ data.Branch }}</td>-->
+     <td>{{ data.Branch }}</td>
       <td>{{ data.get_Type_of_addressee_display }}</td>
       <td>{{ data.Time }}</td>
       <td><form method="POST" action='/pdf/'>{% csrf_token %}<input type='hidden' name="cid" value={{data.id}}><button type='submit' class="btn btn-outline-primary">View</button></form></td>
